@@ -1,0 +1,72 @@
+service: quiztopia-api
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: eu-north-1
+
+  environment:
+    COGNITO_CLIENT_ID: "6s34l5u786v1173c1c7ar9rlbk"
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:*"
+      Resource: "*"
+
+functions:
+  createQuiz:
+    handler: handler.createQuiz
+    events:
+      - http:
+          path: quiz
+          method: post
+          cors: true
+
+  getAllQuizzes:
+    handler: handler.getAllQuizzes
+    events:
+      - http:
+          path: quizzes
+          method: get
+          cors: true
+
+  getQuizQuestions:
+    handler: handler.getQuizQuestions
+    events:
+      - http:
+          path: quiz/{quizId}
+          method: get
+          cors: true
+
+  addQuestion:
+    handler: handler.addQuestion
+    events:
+      - http:
+          path: quiz/{quizId}/question
+          method: post
+          cors: true
+
+  deleteQuiz:
+    handler: handler.deleteQuiz
+    events:
+      - http:
+          path: quiz/{quizId}
+          method: delete
+          cors: true
+
+  registerUser:
+    handler: handler.registerUser
+    events:
+      - http:
+          path: user/register
+          method: post
+          cors: true
+
+  loginUser:
+    handler: handler.loginUser
+    events:
+      - http:
+          path: user/login
+          method: post
+          cors: true
